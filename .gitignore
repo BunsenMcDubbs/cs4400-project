@@ -1,6 +1,9 @@
 # Vim editor files
 *.swp
 
+# Front-end libraries (Bower packages)
+app/static/vendor
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
