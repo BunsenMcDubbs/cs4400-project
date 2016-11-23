@@ -21,10 +21,10 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-      {%block navbar_items %}
+        {%block navbar_items %}
         <a class="navbar-brand" href="{{ url_for('main.home') }}">Home</a>
+        {% endblock %}
         <a class="btn btn-default navbar-btn" href="{{ url_for('main.login') }}">Login</a>
-      {% endblock %}
       </div>
     </div>
   </nav>
