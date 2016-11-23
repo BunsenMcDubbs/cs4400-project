@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <head>
-    <title>{% block title %}{% endblock %}</title>
-    <meta charset="utf-8">
-    
-    {% block meta %}
-        <meta name="description" content="">
-        <meta name="author" content="">
-    {% endblock %}
+  <title>{% block title %}{% endblock %}</title>
+  <meta charset="utf-8">
 
-    {% assets "common_css" %}
-        <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
-    {% endassets %}
+  {% block meta %}
+    <meta name="description" content="">
+    <meta name="author" content="">
+  {% endblock %}
 
-    {% block css %}
-    {% endblock %}
+  {% assets "common_css" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+  {% endassets %}
+
+  {% block css %}
+  {% endblock %}
 
 </head>
 <body>
 
-    <div class="container">
-        {% block body %}
-        {% endblock %}
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+      {%block navbar_items %}
+        <a class="navbar-brand" href="{{ url_for('main.home') }}">Home</a>
+        <a class="btn btn-default navbar-btn" href="{{ url_for('main.login') }}">Login</a>
+      {% endblock %}
+      </div>
     </div>
+  </nav>
 
-    {% assets "common_js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+  <div class="container">
+    {% block body %}
+    {% endblock %}
+  </div>
+
+  {% assets "common_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 </body>
 </html>

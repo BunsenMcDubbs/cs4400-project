@@ -3,6 +3,7 @@ from webassets.loaders import PythonLoader as PythonAssetsLoader
 
 from app import assets
 from app.controllers.main import main
+from app.controllers.admin import admin
 from app.controllers.api import api
 
 from app.extensions import (
@@ -19,6 +20,7 @@ def create_app(config_name):
         assets_env.register(name, bundle)
 
     app.register_blueprint(main)
+    app.register_blueprint(admin, url_prefix='/admin')
     app.register_blueprint(api, url_prefix='/api')
 
     return app

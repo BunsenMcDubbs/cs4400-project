@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Login Page{% endblock %}
+
+{% block navbar_items %}
+<span class="navbar-brand">Login or Register</span>
+{% endblock %}
+
+{% block body %}
+<h1>Welcome!</h1>
+
+<!-- Login form -->
+<div>
+  <form>
+    <div class="form-group">
+      <input type="text" name="username" class="form-control" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" class="form-control" placeholder="Password">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </form>
+</div>
+
+<hr>
+
+<div>
+  <form>
+    <div class="form-group">
+      <input type="text" name="username" class="form-control" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <input type="email" name="gtemail" class="form-control" placeholder="GT Email Address">
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" class="form-control" placeholder="Password">
+    </div>
+    <div class="form-group">
+      <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default">Register</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

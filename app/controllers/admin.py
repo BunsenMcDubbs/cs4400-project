@@ -3,12 +3,8 @@ from flask_login import login_user, logout_user, login_required
 
 # from app.models import User
 
-main = Blueprint('main', __name__)
+admin = Blueprint('admin', __name__,)
 
-@main.route('/')
+@admin.route('/')
 def home():
-    return render_template('index.html')
-
-@main.route('/login')
-def login():
-    return render_template('login.html')
+    return render_template('admin/index.html')
