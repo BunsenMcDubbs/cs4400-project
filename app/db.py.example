@@ -1,0 +1,15 @@
+from mysql.connector import (connection)
+
+cnx = None
+
+def get_connection():
+    global cnx
+    if cnx is None:
+        config = {
+            'user': <username>,
+            'password': <password>,
+            'host': 'localhost',
+            'database': 'cs4400',
+        }
+        cnx = connection(**config)
+    return cnx
