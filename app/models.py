@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 import app.db as db
 
-class User():
+class User(UserMixin):
     def __init__(self, username, password, email, is_new_user=True, extra_info=dict()):
         self.username = username
         self.password = password if is_new_user is False else generate_password_hash(password)
@@ -44,6 +44,15 @@ class User():
     def check_password(self, value):
         return check_password_hash(self.password, value)
 
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.username
+
     @staticmethod
     def find_by_username(username):
         query = ("SELECT username, password, email, year, major, is_admin FROM user WHERE username=%(username)s")
@@ -55,6 +64,6 @@ class User():
             'year': raw_data[3],
             'major': raw_data[4],
             'is_admin': raw_data[5],
-        })
+        }) if raw_data is not None else None
         cursor.close()
         return user

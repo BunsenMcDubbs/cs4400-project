@@ -4,10 +4,10 @@ from webassets.loaders import PythonLoader as PythonAssetsLoader
 from app import assets
 from app.controllers.main import main
 from app.controllers.admin import admin
-from app.controllers.api import api
 
 from app.extensions import (
-    assets_env
+    assets_env,
+    login_manager
 )
 
 def create_app(config_name):
@@ -19,8 +19,9 @@ def create_app(config_name):
     for name, bundle in assets_loader.load_bundles().items():
         assets_env.register(name, bundle)
 
+    login_manager.init_app(app)
+
     app.register_blueprint(main)
     app.register_blueprint(admin, url_prefix='/admin')
-    app.register_blueprint(api, url_prefix='/api')
 
     return app

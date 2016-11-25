@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Register Page{% endblock %}
+
+{% block navbar_items %}
+<span class="navbar-brand">Register</span>
+{% endblock %}
+
+{% block body %}
+<h1>Register</h1>
+<div>
+  <form role="form" action="{{ url_for('.register') }}" method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {% if form.username.errors %}
+        {% for e in form.username.errors %}
+          <p class="help-block">{{ e }}</p>
+        {% endfor %}
+      {% endif %}
+      {{ form.username(class_='form-control', placeholder='username') }}
+    </div>
+    <div class="form-group">
+      {% if form.email.errors %}
+        {% for e in form.email.errors %}
+          <p class="help-text">{{ e }}</p>
+        {% endfor %}
+      {% endif %}
+      {{ form.email(class_='form-control', placeholder='email') }}
+    </div>
+    <div class="form-group">
+      {% if form.password.errors %}
+        {% for e in form.password.errors %}
+          <p class="help-text">{{ e }}</p>
+        {% endfor %}
+      {% endif %}
+      {{ form.password(class_='form-control', placeholder='password') }}
+    </div>
+    <div class="form-group"> 
+      {{ form.confirm_password(class_='form-control', placeholder='password, again') }}
+    </div>
+    <button type="submit" class="btn btn-primary">Sign up</button>
+  </form>
+</div>
+{% endblock %}
