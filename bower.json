@@ -9,7 +9,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "angularjs#^1.5.8",
     "bootstrap": "^3.3.7"
   }
 }
