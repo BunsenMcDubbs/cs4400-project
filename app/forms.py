@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm as Form
-from wtforms import TextField, PasswordField
+from wtforms import TextField, PasswordField, SelectField
 from wtforms import validators
 
-from .models import User
+from app.models import User, Year, Major
 
 class LoginForm(Form):
     username = TextField(u'username', validators=[validators.required()])
@@ -37,4 +37,14 @@ class RegisterUserForm(Form):
         if user:
             self.username.errors.append('Username already in use')
             return False
+        return True
+
+class EditUserForm(Form):
+    major = SelectField(u'major', choices=Major.get_all(), coerce=lambda x: unicode(x) if x else None)
+    year = SelectField(u'year', choices=Year.get_all(), coerce=lambda x: int(x) if x else None)
+
+    def validate(self):
+        # validating with SelectField is hard?
+        # if not super(EditUserForm, self).validate():
+        #     return False
         return True

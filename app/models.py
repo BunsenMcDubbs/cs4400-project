@@ -18,14 +18,16 @@ class User(UserMixin):
         update_user = "UPDATE user SET email=%(email)s, year=%(year)s, major=%(major)s WHERE username=%(username)s"
         cnx = db.get_connection()
         cursor = cnx.cursor()
-        if self.is_new_user:
-            cursor.execute(insert_user, vars(self))
-            self.is_new_user = False
-        else:
-            cursor.execute(update_user, vars(self))
+        try:
+            if self.is_new_user:
+                cursor.execute(insert_user, vars(self))
+                self.is_new_user = False
+            else:
+                cursor.execute(update_user, vars(self))
+        finally:
+            print cursor.statement
         cnx.commit()
         cursor.close()
-
 
     def set_password(self, password):
         password_hash = generate_password_hash(password)
@@ -67,3 +69,58 @@ class User(UserMixin):
         }) if raw_data is not None else None
         cursor.close()
         return user
+
+class Year():
+    @staticmethod
+    def convert_to_name(year):
+        query = ("SELECT name FROM year_name WHERE year=%(year)s")
+        cnx = db.get_connection()
+        cursor = cnx.cursor()
+        cursor.execute(query, {'year': year})
+        name = cursor.fetchone()
+        cursor.close()
+        return name
+
+
+    @staticmethod
+    def convert_to_year(name):
+        query = ("SELECT year from year_name WHERE name=%(name)s")
+        cnx = db.get_connection()
+        cursor = cnx.cursor()
+        cursor.execute(query, {'name': name})
+        year = cursor.fetchone()
+        cursor.close()
+        return year
+
+    @staticmethod
+    def get_all():
+        query = ("SELECT year, name from year_name")
+        cnx = db.get_connection()
+        cursor = cnx.cursor()
+        cursor.execute(query)
+        all_data = cursor.fetchall()
+        cursor.close()
+        all_data.append(('', 'None'))
+        return all_data
+
+class Major():
+    @staticmethod
+    def get_department(major):
+        query = ("SELECT department FROM major WHERE major=%(major)s")
+        cnx = db.get_connection()
+        cursor = cnx.cursor()
+        cursor.execute(query, {'major': major})
+        dept = cursor.fetchone()
+        cursor.close()
+        return dept
+
+    @staticmethod
+    def get_all():
+        query = ("SELECT name, department_name FROM major")
+        cnx = db.get_connection()
+        cursor = cnx.cursor()
+        cursor.execute(query)
+        all_data = cursor.fetchall()
+        cursor.close()
+        all_data.append(('', 'None'))
+        return all_data

@@ -27,7 +27,8 @@
         {% if not current_user.is_authenticated %}
           <a class="btn btn-default navbar-btn" href="{{ url_for('main.login') }}">Login</a>
         {% else %}
-          <p class="navbar-text">Hello {{ current_user.username }}!
+          <p class="navbar-text">Hello
+            <a class="navbar-link" href="{{ url_for('main.edit_user') }}">{{ current_user.username }}</a>!
             <a class="navbar-link" href="{{ url_for('main.logout') }}">Logout</a>
           </p>
         {% endif %}
