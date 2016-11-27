@@ -1,15 +1,9 @@
-from mysql.connector import (connection)
+import pymysql.cursors
 
-cnx = None
-
-def get_connection():
-    global cnx
-    if cnx is None:
-        config = {
-            'user': <username>,
-            'password': <password>,
-            'host': 'localhost',
-            'database': 'cs4400',
-        }
-        cnx = connection(**config)
-    return cnx
+# Connect to the database
+connection = pymysql.connect(host='localhost',
+                             user='user',
+                             password='passwd',
+                             db='db',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
