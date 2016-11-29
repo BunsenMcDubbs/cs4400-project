@@ -102,19 +102,17 @@ class Major():
     def get_department(major):
         query = ("SELECT department FROM major WHERE major=%(major)s")
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        cursor.execute(query, {'major': major})
-        dept = cursor.fetchone()
-        cursor.close()
+        with cnx.cursor() as cursor:
+            cursor.execute(query, {'major': major})
+            dept = cursor.fetchone()
         return dept
 
     @staticmethod
     def get_all():
         query = ("SELECT name, department_name FROM major")
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        cursor.execute(query)
-        all_data = cursor.fetchall()
-        cursor.close()
+        with cnx.cursor() as cursor:
+            cursor.execute(query)
+            all_data = list(cursor.fetchall())
         all_data.append(('', 'None'))
         return all_data
