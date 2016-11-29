@@ -1,4 +1,4 @@
-from mysql.connector import (connection)
+from pymysql.connections import Connection
 
 cnx = None
 
@@ -11,5 +11,5 @@ def get_connection():
             'host': 'localhost',
             'database': 'cs4400',
         }
-        cnx = connection(**config)
+        cnx = Connection(**config)
     return cnx

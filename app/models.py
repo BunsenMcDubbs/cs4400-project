@@ -17,29 +17,27 @@ class User(UserMixin):
         insert_user = "INSERT INTO user (username, password, email, year, major, is_admin) VALUES (%(username)s, %(password)s, %(email)s, %(year)s, %(major)s, %(is_admin)s)"
         update_user = "UPDATE user SET email=%(email)s, year=%(year)s, major=%(major)s WHERE username=%(username)s"
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        try:
-            if self.is_new_user:
-                cursor.execute(insert_user, vars(self))
-                self.is_new_user = False
-            else:
-                cursor.execute(update_user, vars(self))
-        finally:
-            print cursor.statement
-        cnx.commit()
-        cursor.close()
+        with cnx.cursor() as cursor:
+            try:
+                if self.is_new_user:
+                    cursor.execute(insert_user, vars(self))
+                    self.is_new_user = False
+                else:
+                    cursor.execute(update_user, vars(self))
+            finally:
+                print cursor._last_executed
+            cnx.commit()
 
     def set_password(self, password):
         password_hash = generate_password_hash(password)
         set_password = "UPDATE user SET password=%(password)s WHERE username=%(username)s"
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        result = cursor.execute(set_password, {
-            'username': self.username,
-            'password': password_hash,
-        })
-        cnx.commit()
-        cursor.close()
+        with cnx.cursor() as cursor:
+            result = cursor.execute(set_password, {
+                'username': self.username,
+                'password': password_hash,
+            })
+            cnx.commit()
         return result
         # return {'error': 'not yet implemented'}
 
@@ -59,15 +57,14 @@ class User(UserMixin):
     def find_by_username(username):
         query = ("SELECT username, password, email, year, major, is_admin FROM user WHERE username=%(username)s")
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        cursor.execute(query, {'username': username})
-        raw_data = cursor.fetchone()
-        user = User(raw_data[0], raw_data[1], raw_data[2], is_new_user=False, extra_info={
-            'year': raw_data[3],
-            'major': raw_data[4],
-            'is_admin': raw_data[5],
-        }) if raw_data is not None else None
-        cursor.close()
+        with cnx.cursor() as cursor:
+            cursor.execute(query, {'username': username})
+            raw_data = cursor.fetchone()
+            user = User(raw_data[0], raw_data[1], raw_data[2], is_new_user=False, extra_info={
+                'year': raw_data[3],
+                'major': raw_data[4],
+                'is_admin': raw_data[5],
+            }) if raw_data is not None else None
         return user
 
 class Year():
@@ -75,10 +72,9 @@ class Year():
     def convert_to_name(year):
         query = ("SELECT name FROM year_name WHERE year=%(year)s")
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        cursor.execute(query, {'year': year})
-        name = cursor.fetchone()
-        cursor.close()
+        with cnx.cursor() as cursor:
+            cursor.execute(query, {'year': year})
+            name = cursor.fetchone()
         return name
 
 
@@ -86,20 +82,18 @@ class Year():
     def convert_to_year(name):
         query = ("SELECT year from year_name WHERE name=%(name)s")
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        cursor.execute(query, {'name': name})
-        year = cursor.fetchone()
-        cursor.close()
+        with cnx.cursor() as cursor:
+            cursor.execute(query, {'name': name})
+            year = cursor.fetchone()
         return year
 
     @staticmethod
     def get_all():
         query = ("SELECT year, name from year_name")
         cnx = db.get_connection()
-        cursor = cnx.cursor()
-        cursor.execute(query)
-        all_data = cursor.fetchall()
-        cursor.close()
+        with cnx.cursor() as cursor:
+            cursor.execute(query)
+            all_data = list(cursor.fetchall())
         all_data.append(('', 'None'))
         return all_data
 
