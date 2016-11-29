@@ -22,7 +22,7 @@ class LoginForm(Form):
 
 class RegisterUserForm(Form):
     username = TextField(u'username', validators=[validators.required()])
-    email = TextField(u'email', validators=[validators.required()])
+    email = TextField(u'email', validators=[validators.required(), validators.email()])
     password = PasswordField(u'password', validators=[validators.required()])
 
     confirm_password = PasswordField(u'confirm_password', validators=[validators.required()])
