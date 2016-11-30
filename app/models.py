@@ -4,13 +4,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import app.db as db
 
 class User(UserMixin):
-    def __init__(self, username, password, email, is_new_user=True, extra_info=dict()):
+    def __init__(self, username, password, email, year=None, major=None, is_admin=False, is_new_user=True):
         self.username = username
         self.password = password if is_new_user is False else generate_password_hash(password)
         self.email = email
-        self.year = extra_info.get('year', None)
-        self.major = extra_info.get('major', None)
-        self.is_admin = extra_info.get('is_admin', False)
+        self.year = year
+        self.major = major
+        self.is_admin = is_admin is True
         self.is_new_user = is_new_user
 
     def save(self):
@@ -60,11 +60,7 @@ class User(UserMixin):
         with cnx.cursor() as cursor:
             cursor.execute(query, {'username': username})
             raw_data = cursor.fetchone()
-            user = User(raw_data[0], raw_data[1], raw_data[2], is_new_user=False, extra_info={
-                'year': raw_data[3],
-                'major': raw_data[4],
-                'is_admin': raw_data[5],
-            }) if raw_data is not None else None
+            user = User(is_new_user=False, **raw_data) if raw_data is not None else None
         return user
 
 class Year():
@@ -94,7 +90,7 @@ class Year():
         with cnx.cursor() as cursor:
             cursor.execute(query)
             all_data = list(cursor.fetchall())
-        all_data.append(('', 'None'))
+        all_data.append({'name': 'None', 'year': None})
         return all_data
 
 class Major():

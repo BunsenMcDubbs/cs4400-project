@@ -40,8 +40,8 @@ class RegisterUserForm(Form):
         return True
 
 class EditUserForm(Form):
-    major = SelectField(u'major', choices=Major.get_all(), coerce=lambda x: unicode(x) if x else None)
-    year = SelectField(u'year', choices=Year.get_all(), coerce=lambda x: int(x) if x else None)
+    major = SelectField(u'major', choices=[(m['name'], m['name']) for m in Major.get_all()], coerce=lambda x: unicode(x) if x != 'None' else None)
+    year = SelectField(u'year', choices=[(y['year'], y['name']) for y in Year.get_all()], coerce=lambda x: int(x) if x else None)
 
     def validate(self):
         # validating with SelectField is hard?
