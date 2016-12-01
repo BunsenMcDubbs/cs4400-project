@@ -10,7 +10,7 @@ class User(UserMixin):
         self.email = email
         self.year = year
         self.major = major
-        self.is_admin = is_admin is True
+        self.is_admin = is_admin == True
         self.is_new_user = is_new_user
 
     def save(self):
