@@ -1,5 +1,11 @@
 from flask_wtf import FlaskForm as Form
-from wtforms import TextField, PasswordField, SelectField
+from wtforms import (
+    TextField,
+    PasswordField,
+    SelectField,
+    SelectMultipleField,
+    IntegerField
+)
 from wtforms import validators
 
 from app.models import User, Year, Major
@@ -47,4 +53,19 @@ class EditUserForm(Form):
         # validating with SelectField is hard?
         # if not super(EditUserForm, self).validate():
         #     return False
+        return True
+
+class AddProjectForm(Form):
+    name = TextField(u'name', validators=[validators.required()])
+    description = TextField(u'description', validators=[validators.required()])
+    advisor_name = TextField(u'advisor', validators=[validators.required()])
+    advisor_email = TextField(u'advisor_email', validators=[validators.required(), validators.email()])
+    est_num_students = IntegerField(u'est_num_students')
+    designation_name = SelectField()
+    categories = SelectMultipleField()
+    requirements = SelectMultipleField()
+
+    def validate(self):
+        if not super(AddProjectForm, self).validate():
+            return False
         return True
