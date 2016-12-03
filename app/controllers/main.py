@@ -24,6 +24,8 @@ def view_project(project_name):
     project = Project.find_by_name(project_name)
     if project is None:
         return abort(404)
+    project.categories = [c['category_name'] for c in project.categories]
+    project.requirements = [r['requirement'] for r in project.requirements]
     has_prev_application = Application.find(
         project_name=project_name,
         student_name=current_user.username,) is not None
@@ -50,6 +52,7 @@ def view_course(course_name):
     course = Course.find_by_name(course_name)
     if course is None:
         return abort(404)
+    course.categories = [c['category_name'] for c in course.categories]
     return render_template('view_course.html', course=course)
 
 @main.route('/applications')

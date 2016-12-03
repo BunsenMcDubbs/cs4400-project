@@ -37,7 +37,7 @@ class Project():
         "INSERT INTO project_requirement (name, requirement) "
         "VALUES (%(name)s, %(requirement)s)"
         )
-
+        print vars(self)
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
             project_dict = {
@@ -53,7 +53,10 @@ class Project():
                 for c in filter(lambda c: c is not None, self.categories):
                     cursor.execute(insert_category, {'category': c, 'name': self.name})
                 for r in filter(lambda r: r is not None, self.requirements):
-                    cursor.execute(insert_requirement, {'requirement': r, 'name': self.name})
+                    try:
+                        cursor.execute(insert_requirement, {'requirement': r, 'name': self.name})
+                    finally:
+                        print cursor._last_executed
             else:
                 raise NotImplementedError('projects can not be modified')
             cnx.commit()

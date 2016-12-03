@@ -8,8 +8,8 @@
   <li>Advisor: {{ project.advisor_name }} ({{project.advisor_email }})</li>
   <li>Description:<br>{{ project.description }}</li>
   <li>Designation: {{ project.designation_name or 'None' }}</li>
-  <li>Category: {{ project.categories | join(',') or 'None' }} </li>
-  <li>Requirements: {{ project.requirements | join(',') or 'None' }}</li>
+  <li>Category: {{ project.categories | join(', ') or 'None' }} </li>
+  <li>Requirements: {{ project.requirements | join(', ') or 'None' }}</li>
   <li>Estimated number of students: {{ project.est_num_students }}</li>
 </ul>
 <form role="form" action="" method="post">

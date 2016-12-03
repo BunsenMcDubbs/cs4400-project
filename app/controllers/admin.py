@@ -36,7 +36,11 @@ def add_project():
             est_num_students=form.est_num_students.data,
             designation_name=form.designation_name.data,
             categories=form.categories.data,
-            requirements=form.requirements.data,
+            requirements=[
+                form.requirement_year.data,
+                form.requirement_major.data,
+                form.requirement_department.data,
+                ],
             is_new_project=True,
             )
         project.save()

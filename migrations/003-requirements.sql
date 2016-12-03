@@ -6,8 +6,8 @@ create table requirement (
 );
 
 alter table project_requirement
-    add constraint fk_project_requirement_name_requirement_requirement_name
-    foreign key (name) references requirement(requirement_name);
+    add constraint fk_project_requirement_requirement_requirement_requirement_name
+    foreign key (requirement) references requirement(requirement_name);
 
 insert into requirement (requirement_name, requirement_type)
 values 
