@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}View All Applications{% endblock %}
+
+{% block body %}
+<h1>View All Applications</h1>
+<table class="table table-striped">
+<tr>
+  <th>Project</th>
+  <th>Applicant Major</th>
+  <th>Applicant Year</th>
+  <th>Status</th>
+</tr>
+{% for app in applications %}
+<tr>
+  <td>{{ app.project_name }}</td>
+  <td>{{ app.user.major }}</td>
+  <td>{{ app.user.year }}</td>
+  <td>{{ app.status }}</td>
+</tr>
+{% else %}
+<tr><td>No Applications</td></th>
+{% endfor %}
+</table>
+{% endblock %}

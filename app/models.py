@@ -279,10 +279,10 @@ class Application():
         self.status = status
         self.is_new_application = is_new_application
     
-    def approve(self):
+    def accept(self):
         if self.is_new_application:
             raise ValueError('cannot approve a new application, save first')
-        self._update_status('approved')
+        self._update_status('accepted')
 
     def reject(self):
         if self.is_new_application:

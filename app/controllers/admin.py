@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, login_required
 from app.models import (
+    User,
     Project,
     Course,
+    Application,
 )
 from app.forms import (
     AddProjectForm,
@@ -51,3 +53,10 @@ def add_course():
         course.save()
         return redirect(url_for('.home'))
     return render_template('admin/add_course.html', form=form)
+
+@admin.route('/applications', methods=['GET', 'POST'])
+def view_applications():
+    applications = [vars(app) for app in Application.find()]
+    for app in applications:
+        app['user'] = User.find_by_username(app['student_name'])
+    return render_template('admin/view_applications.html', applications=applications)
