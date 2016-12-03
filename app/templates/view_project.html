@@ -12,6 +12,8 @@
   <li>Requirements: {{ project.requirements | join(',') or 'None' }}</li>
   <li>Estimated number of students: {{ project.est_num_students }}</li>
 </ul>
-<a href="{{ url_for('main.home') }}" class="btn btn-default">Back</a>
-<a href="#" class="btn btn-primary">Apply</a>
+<form role="form" action="" method="post">
+  <a href="{{ url_for('.home') }}" class="btn btn-default">Back</a>
+  <button type="submit" class="btn btn-primary">Apply</button>
+</form>
 {% endblock %}
