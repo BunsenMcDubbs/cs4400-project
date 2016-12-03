@@ -49,7 +49,7 @@ create table department (
 
 create table course (
   name varchar(50) primary key,
-  course_number int,
+  course_number varchar(50),
   instructor varchar(50),
   est_num_students int,
   designation_name varchar(50)

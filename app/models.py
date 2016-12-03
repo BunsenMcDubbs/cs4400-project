@@ -202,6 +202,48 @@ class Project():
                 p.categories = cursor.fetchall()
                 cursor.execute(get_requirements, {'name': p.name})
                 p.requirements = cursor.fetchall()
-            cursor.close()
+            cursor.closedd()
         return projects if fuzzy else projects[0]
 
+class Course():
+    def __init__(self, course_number, name, instructor, est_num_students, designation_name, categories, is_new_course=True):
+        print type(course_number)
+        self.course_number = course_number
+        self.name = name
+        self.instructor = instructor
+        self.est_num_students = est_num_students
+        self.designation_name = designation_name
+        self.categories = categories
+        self.is_new_course = is_new_course
+    
+    def save(self):
+        insert_course = (
+        "INSERT INTO course"
+            "(name,"
+            "course_number,"
+            "instructor,"
+            "est_num_students,"
+            "designation_name)"
+         "VALUES"
+            "(%(name)s,"
+            "%(course_number)s,"
+            "%(instructor)s,"
+            "%(est_num_students)s,"
+            "%(designation_name)s)"
+        )
+        insert_category = (
+        "INSERT INTO course_category (course_name, category_name)"
+        "VALUES (%(name)s, %(category)s)"
+        )
+        cnx = db.get_connection()
+        with cnx.cursor() as cursor:
+            if self.is_new_course:
+                cursor.execute(insert_course, vars(self))
+                for c in filter(lambda c: c is not None, self.categories):
+                    cursor.execute(insert_category, {'name': self.name, 'category': c})
+            else:
+                raise NotImplementedError('courses can not be modified')
+            cnx.commit()
+    
+    def find(name='', number='', fuzzy=False):
+        return []

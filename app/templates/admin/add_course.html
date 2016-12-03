@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+
+{% import 'forms.html' as forms %}
+
+{% block title %}Add Course{% endblock %}
+
+{% block body %}
+<h1>Add a Course</h1>
+<div>
+  <form action="{{ url_for('.add_course')}}" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {{ forms.input(form.course_number, label='Course Number') }}
+    <div class="form-group">
+      {{ forms.input(form.name, label='Name') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.instructor, label='Instructor') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.est_num_students, label='Est. Number of Students') }}
+    </div>
+    <hr>
+    <div class="form-group">
+      {{ forms.input(form.designation_name, label='Designation') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.categories, label='Categories') }}
+    </div>
+    <hr>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
