@@ -22,13 +22,15 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <ul class="nav navbar-nav navbar-left">
-        <li><a class="navbar-brand" href="{{ url_for('main.home') }}">Home</a></li>
-        {% if current_user.is_authenticated %}
-          <li><a href="{{ url_for('main.view_applications') }}">My Applications</a></li>
-        {% endif %}
-        {% if current_user.is_admin %}
-          <li><a href="{{ url_for('admin.home') }}">Admin</a></li>
-        {% endif %}
+        {% block navbar_items %}
+          <li><a class="" href="{{ url_for('main.home') }}">Home</a></li>
+          {% if current_user.is_authenticated and not current_user.is_admin %}
+            <li><a href="{{ url_for('main.view_applications') }}">My Applications</a></li>
+          {% endif %}
+          {% if current_user.is_authenticated and current_user.is_admin %}
+            <li><a href="{{ url_for('admin.home') }}">Admin</a></li>
+          {% endif %}
+        {% endblock navbar_items %}
       </ul>
       <div class="nav navbar-nav navbar-right"> 
         {% if not current_user.is_authenticated %}

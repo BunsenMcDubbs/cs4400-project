@@ -14,6 +14,8 @@
 </ul>
 <form role="form" action="" method="post">
   <a href="{{ url_for('.home') }}" class="btn btn-default">Back</a>
-  <button type="submit" class="btn btn-primary">Apply</button>
+  {% if not current_user.is_admin %}
+    <button type="submit" class="btn btn-primary">Apply</button>
+  {% endif %}
 </form>
 {% endblock %}
