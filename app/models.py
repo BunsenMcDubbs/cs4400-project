@@ -24,8 +24,9 @@ class User(UserMixin):
                     self.is_new_user = False
                 else:
                     cursor.execute(update_user, vars(self))
-            finally:
+            except:
                 print cursor._last_executed
+                raise
             cnx.commit()
 
     def set_password(self, password):
@@ -116,7 +117,6 @@ class Major():
 class Project():
 
     def __init__(self, name, description, advisor_name, advisor_email, est_num_students, designation_name, categories, requirements=list(), is_new_project=True):
-        self._name = name # needed in case we change the name (currently the primary key) - not using an id
         self.name = name
         self.description = description
         self.advisor_name = advisor_name
@@ -155,7 +155,6 @@ class Project():
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
             project_dict = {
-                '_name': self._name,
                 'name': self.name,
                 'description': self.description,
                 'advisor_name': self.advisor_name,
@@ -165,9 +164,9 @@ class Project():
             }
             if self.is_new_project:
                 cursor.execute(insert_project, project_dict)
-                for c in self.categories:
+                for c in filter(lambda c: c is not None, self.categories):
                     cursor.execute(insert_category, {'category': c, 'name': self.name})
-                for r in self.requirements:
+                for r in filter(lambda r: r is not None, self.requirements):
                     cursor.execute(insert_requirement, {'requirement': r, 'name': self.name})
             else:
                 raise NotImplementedError('projects can not be modified')
@@ -192,18 +191,17 @@ class Project():
         name = name if fuzzy is False else '%%%s%%'%(name)
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
-            project = None if fuzzy is False else list()
+            projects = list()
             cursor.execute(query, {'name': name})
             for result in cursor:
                 data = dict(result)
-                cursor.execute(get_categories, {'name': name})
-                data['categories'] = cursor.fetchall()
-                cursor.execute(get_requirements, {'name': name})
-                data['requirements'] = cursor.fetchall()
-                p = Project(is_new_project=False, **data)
-                if fuzzy:
-                    project.append(p)
-                else:
-                    project = p
-        return project
+                p = Project(is_new_project=False, categories=[], requirements=[], **data)
+                projects.append(p)
+            for p in projects:
+                cursor.execute(get_categories, {'name': p.name})
+                p.categories = cursor.fetchall()
+                cursor.execute(get_requirements, {'name': p.name})
+                p.requirements = cursor.fetchall()
+            cursor.close()
+        return projects if fuzzy else projects[0]
 

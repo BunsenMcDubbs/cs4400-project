@@ -1,5 +1,7 @@
 {% extends "admin/base.html" %}
 
+{% import 'forms.html' as forms %}
+
 {% block title %}Add Project{% endblock %}
 
 {% block body %}
@@ -7,7 +9,33 @@
 <div>
   <form action="{{ url_for('.add_project')}}" method="POST">
     <div class="form-group">
-      
+      {{ forms.input(form.name, label='Name') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.description, label='Description') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.advisor_name, label='Advisor name') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.advisor_email, label='Advisor email') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.est_num_students, label='Est. Number of Students') }}
+    </div>
+    <hr>
+    <div class="form-group">
+      {{ forms.input(form.designation_name, label='Designation') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.categories, label='Categories') }}
+    </div>
+    <div class="form-group">
+      {{ forms.input(form.requirements, label='Requirements') }}
+    </div>
+    <hr>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
 </div>

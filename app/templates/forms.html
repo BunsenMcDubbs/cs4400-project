@@ -1,0 +1,11 @@
+{% macro input(field, label=None, placeholder='', class='form-control') %}
+{% if field.errors %}
+  {% for e in field.errors %}
+    <p class="help-block">{{ e }}</p>
+  {% endfor %}
+{% endif %}
+{% if label %}
+  <label for="{{ field.id }}">{{ label }}</label>
+{% endif %}
+{{ field(class_=class, placeholder=placeholder) }}
+{% endmacro %}

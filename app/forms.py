@@ -58,14 +58,15 @@ class EditUserForm(Form):
 class AddProjectForm(Form):
     name = TextField(u'name', validators=[validators.required()])
     description = TextField(u'description', validators=[validators.required()])
-    advisor_name = TextField(u'advisor', validators=[validators.required()])
+    advisor_name = TextField(u'advisor_name', validators=[validators.required()])
     advisor_email = TextField(u'advisor_email', validators=[validators.required(), validators.email()])
     est_num_students = IntegerField(u'est_num_students')
-    designation_name = SelectField()
-    categories = SelectMultipleField()
-    requirements = SelectMultipleField()
+    designation_name = SelectField(u'designation_name', choices=[(None, '')], coerce=lambda x: unicode(x) if x != 'None' else None)
+    categories = SelectMultipleField(u'categories', choices=[(None, '')], coerce=lambda x: unicode(x) if x != 'None' else None)
+    requirements = SelectMultipleField(u'requirements', choices=[(None,'')], coerce=lambda x: unicode(x) if x != 'None' else None)
 
     def validate(self):
-        if not super(AddProjectForm, self).validate():
-            return False
+        # validating with SelectField is hard?
+        # if not super(AddProjectForm, self).validate():
+        #     return False
         return True
