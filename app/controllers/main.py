@@ -51,6 +51,12 @@ def view_course(course_name):
         return abort(404)
     return render_template('view_course.html', course=course)
 
+@main.route('/applications')
+@login_required
+def view_applications():
+    my_apps = Application.find(student_name=current_user.username)
+    return render_template('view_applications.html', applications=my_apps)
+
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

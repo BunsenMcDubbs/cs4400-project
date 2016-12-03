@@ -335,7 +335,7 @@ class Application():
         "WHERE "
             "project_name LIKE %(project_name)s and "
             "student_name LIKE %(student_name)s")
-        multi = student_name == '%%' and project_name == '%%'
+        multi = student_name == '%%' or project_name == '%%'
         results = list() if multi else None
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
