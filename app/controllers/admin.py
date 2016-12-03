@@ -47,7 +47,6 @@ def add_project():
 def add_course():
     form = AddCourseForm()
     if form.validate_on_submit():
-        print type(form.course_number.data)
         course = Course(
             course_number=form.course_number.data,
             name=form.name.data,
@@ -61,19 +60,40 @@ def add_course():
         return redirect(url_for('.home'))
     return render_template('admin/add_course.html', form=form)
 
-@admin.route('/applications', methods=['GET', 'POST'])
+@admin.route('/applications')
 def view_all_applications():
     applications = get_all_applications()
     return render_template('admin/view_all_applications.html', applications=applications)
 
+@admin.route('/applications/<project_name>/<student_name>/accept')
+def accept_application(project_name, student_name):
+    return _decide_application(project_name, student_name, accept=True)
+
+@admin.route('/applications/<project_name>/<student_name>/reject')
+def reject_application(project_name, student_name):
+    return _decide_application(project_name, student_name, accept=False)
+
+def _decide_application(project_name, student_name, accept):
+    application = Application.find(
+        project_name=project_name,
+        student_name=student_name)
+    if application.status == 'pending':
+        if accept:
+            application.accept()
+            flash('Successfully accepted application', 'success')
+        else:
+            application.reject()
+            flash('Successfully rejected application', 'success')
+    else:
+        flash('Cannot change status of a decided application', 'danger')
+    return redirect(url_for('admin.view_all_applications'))
+
 @admin.route('/popular_projects')
 def view_popular_projects():
     projects = get_popular_projects()
-    print projects
     return render_template('admin/view_popular_projects.html', projects=projects)
 
 @admin.route('/view_application_report')
 def view_application_report():
     projects = get_application_report()
-    print projects
     return render_template('admin/view_application_report.html', projects=projects)

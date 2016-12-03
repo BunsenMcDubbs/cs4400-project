@@ -2,6 +2,7 @@ drop view if exists admin_application_view;
 create view admin_application_view as (
     select
         a.project_name as project_name,
+        a.student_name as student_name,
         u.major as major,
         u.year as year,
         a.status as status

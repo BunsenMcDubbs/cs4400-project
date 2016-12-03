@@ -3,7 +3,7 @@ from app.models import User, Application
 
 def get_all_applications():
     query = (
-    "SELECT project_name, major, year, status "
+    "SELECT project_name, student_name, major, year, status "
     "FROM admin_application_view")
     cnx = db.get_connection()
     with cnx.cursor() as cursor:

@@ -16,7 +16,16 @@
   <td>{{ app.project_name }}</td>
   <td>{{ app.major }}</td>
   <td>{{ app.year }}</td>
-  <td>{{ app.status }}</td>
+  <td>
+    {% if app.status == 'pending' %}
+      <div class="btn-group btn-group-xs">
+        <a href="{{ url_for('admin.reject_application', project_name=app.project_name, student_name=app.student_name) }}" class="btn btn-danger">Reject</a>
+        <a href="{{ url_for('admin.accept_application', project_name=app.project_name, student_name=app.student_name) }}" class="btn btn-success">Accept</a>
+      </div>
+    {% else %}
+      {{ app.status | capitalize }}
+    {% endif %}
+  </td>
 </tr>
 {% else %}
 <tr><td>No Applications</td></th>
