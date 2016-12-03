@@ -7,7 +7,7 @@ class Year():
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
             cursor.execute(query, {'year': year})
-            name = cursor.fetchone()
+            name = cursor.fetchone()['name']
         return name
 
 
@@ -17,7 +17,7 @@ class Year():
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
             cursor.execute(query, {'name': name})
-            year = cursor.fetchone()
+            year = cursor.fetchone()['year']
         return year
 
     @staticmethod

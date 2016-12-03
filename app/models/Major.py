@@ -11,6 +11,16 @@ class Major():
         return mapping
 
     @staticmethod
+    def get_department(major):
+        query = (
+        "SELECT department_name FROM major WHERE name=%(major)s")
+        cnx = db.get_connection()
+        with cnx.cursor() as cursor:
+            cursor.execute(query, {'major': major})
+            department = cursor.fetchone()['department_name']
+        return department
+
+    @staticmethod
     def get_all():
         query = ("SELECT name, department_name FROM major")
         cnx = db.get_connection()

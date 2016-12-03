@@ -1,4 +1,7 @@
 import app.db as db
+from app.models.Requirement import Requirement
+from app.models.Major import Major
+from app.models.Year import Year
 
 class Project():
 
@@ -60,6 +63,22 @@ class Project():
             else:
                 raise NotImplementedError('projects can not be modified')
             cnx.commit()
+
+    def check_user(self, user):
+        for req in self.requirements:
+            requirement_type = Requirement.get_type(req)
+            if requirement_type == 'year':
+                year_name = Year.convert_to_name(user.year)
+                if year_name != req:
+                    return False
+            elif requirement_type == 'major':
+                if self.major != req:
+                    return False
+            elif requirement_type == 'department':
+                department = Major.get_department(user.major)
+                if department != req:
+                    return False
+        return True
 
     @staticmethod
     def find_by_name(name, fuzzy=False):

@@ -33,14 +33,17 @@ def view_project(project_name):
         if has_prev_application:
             flash('You can only apply once to each project', 'danger')
         else:
-            application = Application(
-                project_name=project_name,
-                student_name=current_user.username,
-                application_date=datetime.now(),
-                status='pending',
-                is_new_application=True)
-            application.save()
-            flash('Application successfully submitted!', 'success')
+            if project.check_user(current_user) is False:
+                flash('You do not fulfill the requirements', 'warning')
+            else:
+                application = Application(
+                    project_name=project_name,
+                    student_name=current_user.username,
+                    application_date=datetime.now(),
+                    status='pending',
+                    is_new_application=True)
+                application.save()
+                flash('Application successfully submitted!', 'success')
     return render_template(
         'view_project.html',
         project=project,
