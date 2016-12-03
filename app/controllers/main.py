@@ -2,9 +2,10 @@ from flask import Blueprint, render_template, flash, request, redirect, url_for,
 from flask_login import login_user, logout_user, login_required, current_user
 
 from datetime import datetime
+import json
 
 from app.forms import LoginForm, RegisterUserForm, EditUserForm
-from app.models import User, Course, Project, Application
+from app.models import User, Course, Project, Application, Major
 from app.search import search
 
 main = Blueprint('main', __name__)
@@ -100,4 +101,6 @@ def edit_user():
         form.year.default = current_user.year
         form.major.default = current_user.major
         form.process()
-    return render_template('edit_user.html', form=form)
+    dept_by_major = Major.get_department_mapping()
+    dept_by_major['None'] = 'None'
+    return render_template('edit_user.html', form=form, dept_by_major=dept_by_major)

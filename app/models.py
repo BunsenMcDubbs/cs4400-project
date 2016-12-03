@@ -96,13 +96,13 @@ class Year():
 
 class Major():
     @staticmethod
-    def get_department(major):
-        query = ("SELECT department FROM major WHERE major=%(major)s")
+    def get_department_mapping():
+        query = ("SELECT name, department_name FROM major")
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
-            cursor.execute(query, {'major': major})
-            dept = cursor.fetchone()
-        return dept
+            cursor.execute(query)
+            mapping = dict([(m['name'], m['department_name']) for m in cursor.fetchall()])
+        return mapping
 
     @staticmethod
     def get_all():

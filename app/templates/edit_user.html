@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block js %}
+<script>dept_by_major = {{ dept_by_major | tojson }};</script>
+<script src="static/js/edit_user.js"></script>
+{% endblock %}
+
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
@@ -14,6 +19,10 @@
     <div class="form-group">
       <label for="{{ form.major.id }}">Major</label>
       {{ form.major(class_='selectpicker') }}
+    </div>
+    <div class="form-group">
+      <label for="department">Department</label>
+      <span id="department"></span>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
   </form>
