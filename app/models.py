@@ -202,7 +202,6 @@ class Project():
                 p.categories = cursor.fetchall()
                 cursor.execute(get_requirements, {'name': p.name})
                 p.requirements = cursor.fetchall()
-            cursor.closedd()
         return projects if fuzzy else projects[0]
 
 class Course():
