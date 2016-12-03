@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask import Blueprint, render_template, flash, request, redirect, url_for, abort
 from flask_login import login_user, logout_user, login_required, current_user
 
 from app.forms import LoginForm, RegisterUserForm, EditUserForm
-from app.models import User
+from app.models import User, Course, Project
+from app.search import search
 
 main = Blueprint('main', __name__)
 
@@ -10,7 +11,23 @@ main = Blueprint('main', __name__)
 def home():
     if not current_user.is_authenticated:
         return redirect(url_for('.login'))
-    return render_template('index.html')
+
+    results = search()
+    return render_template('index.html', results=results)
+
+@main.route('/project/<project_name>')
+def view_project(project_name):
+    project = Project.find_by_name(project_name)
+    if project is None:
+        return abort(404)
+    return render_template('view_project.html', project=project)
+
+@main.route('/course/<course_name>')
+def view_course(course_name):
+    course = Course.find_by_name(course_name)
+    if course is None:
+        return abort(404)
+    return render_template('view_course.html', course=course)
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():

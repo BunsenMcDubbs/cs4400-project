@@ -244,5 +244,28 @@ class Course():
                 raise NotImplementedError('courses can not be modified')
             cnx.commit()
     
-    def find(name='', number='', fuzzy=False):
-        return []
+    @staticmethod
+    def find_by_name(name):
+        query = (
+        "SELECT "
+            "name,"
+            "course_number,"
+            "instructor,"
+            "est_num_students,"
+            "designation_name "
+        "FROM course "
+        "WHERE name=%(name)s"
+        )
+        get_categories = (
+        "SELECT category_name FROM course_category "
+        "WHERE course_name=%(name)s")
+        cnx = db.get_connection()
+        course = None
+        with cnx.cursor() as cursor:
+            cursor.execute(query, {'name': name})
+            data = cursor.fetchone()
+            if data is not None:
+                cursor.execute(get_categories, {'name': name})
+                data['categories'] = cursor.fetchall()
+                course = Course(is_new_course=False, **data)
+        return course

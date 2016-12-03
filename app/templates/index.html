@@ -13,5 +13,25 @@
 
 <!-- Results -->
 <div>
+<table class="table table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+  </tr>
+{% for result in results %}
+  <tr>
+    {% if result.type == 'Project' %}
+    <td><a href="{{ url_for('main.view_project', project_name=result.name) }}">{{ result.name }}</a></td>
+    {% elif result.type == 'Course' %}
+    <td><a href="{{ url_for('main.view_course', course_name=result.name) }}">{{ result.name }}</a></td>
+    {% else %}
+    <td>{{ result.name }}</td>
+    {% endif %}
+    <td>{{ result.type }}</td>
+  </tr>
+{% else %}
+  <tr><td>No Results<td></tr>
+{% endfor %}
+</table>
 </div>
 {% endblock %}

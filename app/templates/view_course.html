@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+
+{% block title %}View Course | {{ course.name }}{% endblock %}
+
+{% block body %}
+<h1>{{ course.course_number }}</h1>
+<ul>
+  <li>Course Name: {{ course.name }}</li>
+  <li>Instructor: {{ course.instructor }}</li>
+  <li>Designation: {{ course.designation_name }}</li>
+  <li>Category: {{ course.categories | join(',') }}</li>
+  <li>Estimated number of students: {{ course.est_num_students }}</li>
+</ul>
+<a href={{ url_for('main.home') }} class="btn btn-default">Back</a>
+{% endblock %}
