@@ -14,8 +14,8 @@
 {% for app in applications %}
 <tr>
   <td>{{ app.project_name }}</td>
-  <td>{{ app.user.major }}</td>
-  <td>{{ app.user.year }}</td>
+  <td>{{ app.major }}</td>
+  <td>{{ app.year }}</td>
   <td>{{ app.status }}</td>
 </tr>
 {% else %}

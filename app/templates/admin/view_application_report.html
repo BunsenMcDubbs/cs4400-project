@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Application Report{% endblock %}
+
+{% block body %}
+<h1>Application Report</h1>
+<table class="table table-striped">
+<tr>
+  <th>Project</th>
+  <th>Num. of Applicants</th>
+  <th>Accept Rate</th>
+  <th>Top 3 Majors</th>
+</tr>
+{% for project in projects %}
+<tr>
+  <td>{{ project.project_name }}</td>
+  <td>{{ project.num_applicants }}</td>
+  <td>{{ project.accept_rate }}</td>
+  <td>{{ project.majors | join(',') }}</td>
+</tr>
+{% else %}
+<tr><td>No Applications</td></th>
+{% endfor %}
+</table>
+{% endblock %}

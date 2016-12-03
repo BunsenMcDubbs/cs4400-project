@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import login_user, logout_user, login_required
+
 from app.models import (
     User,
     Project,
@@ -9,6 +10,12 @@ from app.models import (
 from app.forms import (
     AddProjectForm,
     AddCourseForm,
+)
+
+from app.admin_reports import (
+    get_all_applications,
+    get_popular_projects,
+    get_application_report,
 )
 
 admin = Blueprint('admin', __name__,)
@@ -55,8 +62,18 @@ def add_course():
     return render_template('admin/add_course.html', form=form)
 
 @admin.route('/applications', methods=['GET', 'POST'])
-def view_applications():
-    applications = [vars(app) for app in Application.find()]
-    for app in applications:
-        app['user'] = User.find_by_username(app['student_name'])
-    return render_template('admin/view_applications.html', applications=applications)
+def view_all_applications():
+    applications = get_all_applications()
+    return render_template('admin/view_all_applications.html', applications=applications)
+
+@admin.route('/popular_projects')
+def view_popular_projects():
+    projects = get_popular_projects()
+    print projects
+    return render_template('admin/view_popular_projects.html', projects=projects)
+
+@admin.route('/view_application_report')
+def view_application_report():
+    projects = get_application_report()
+    print projects
+    return render_template('admin/view_application_report.html', projects=projects)

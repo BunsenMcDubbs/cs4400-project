@@ -1,0 +1,21 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Popular Projects{% endblock %}
+
+{% block body %}
+<h1>Popular Projects</h1>
+<table class="table table-striped">
+<tr>
+  <th>Project</th>
+  <th>Num. of Applicants</th>
+</tr>
+{% for project in projects %}
+<tr>
+  <td>{{ project.project_name }}</td>
+  <td>{{ project.num_applicants }}</td>
+</tr>
+{% else %}
+<tr><td>No Applications</td></th>
+{% endfor %}
+</table>
+{% endblock %}

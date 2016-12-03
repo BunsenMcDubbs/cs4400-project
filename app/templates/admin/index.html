@@ -5,9 +5,9 @@
 {% block body %}
 <h1>Choose Functionality</h1>
 <ul>
-    <li><a href="{{ url_for('admin.view_applications')  }}">View Applications</a></li>
-    <li><a href="#">View popular project report</a></li>
-    <li><a href="#">View Application report</a></li>
+    <li><a href="{{ url_for('admin.view_all_applications') }}">View Applications</a></li>
+    <li><a href="{{ url_for('admin.view_popular_projects') }}">View popular project report</a></li>
+    <li><a href="{{ url_for('admin.view_application_report') }}">View Application report</a></li>
     <li><a href="{{ url_for('admin.add_project') }}">Add a Project</a></li>
     <li><a href="{{ url_for('admin.add_course')  }}">Add a Course</a></li>
 </ul>
