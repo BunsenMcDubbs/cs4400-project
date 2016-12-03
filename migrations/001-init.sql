@@ -59,7 +59,7 @@ create table application (
   project_name varchar(50),
   student_name varchar(50),
   application_date date not null,
-  status enum('status1', 'status2') not null,
+  status enum('pending', 'approved', 'rejected') not null,
 
   primary key (project_name, student_name)
 );
