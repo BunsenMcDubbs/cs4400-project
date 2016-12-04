@@ -15,7 +15,7 @@
 <tr>
   <td>{{ project.project_name }}</td>
   <td>{{ project.num_applicants }}</td>
-  <td>{{ project.accept_rate }}</td>
+  <td>{{ project.accept_rate | float * 100 }}%</td>
   <td>{{ project.majors | join(',') }}</td>
 </tr>
 {% else %}

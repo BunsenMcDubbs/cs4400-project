@@ -46,7 +46,7 @@ create view admin_application_report as (
         group by project_name
     ) c
     on a.project_name = c.project_name
-    order by accept_rate
+    order by accept_rate desc
 );
 
 drop view if exists admin_application_report_top_majors;
