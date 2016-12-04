@@ -27,6 +27,15 @@ cp app/db.py.example app/db.py
 vim app/db.py # Replace the dummy values with SQL server credentials
 ```
 
+Database migration scripts are in `migration` and need to be run on the
+database before lauching the web app.
+
+Example:
+```
+mysql -u <username> <schema> < migration/001-init.sql
+# repeat for all scripts in migration
+```
+
 ## Running the app
 
 ```
