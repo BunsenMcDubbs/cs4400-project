@@ -16,9 +16,10 @@ def home():
         return redirect(url_for('.login'))
     form = SearchForm()
     if form.validate_on_submit():
-        search_both = form.search_type.data
+        search_both = form.search_type.data == "both"
+        print(search_both)
         search_projects = search_both or form.search_type.data == 'project'
-        search_courses = search_both or form.search_type.data == 'courses'
+        search_courses = search_both or form.search_type.data == 'course'
         results = search(
             title=form.title.data,
             category=form.categories.data,
