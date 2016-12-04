@@ -13,7 +13,7 @@ class Requirement():
         return r_type
 
     @staticmethod
-    def _get_by_type(r_type):
+    def _get_by_type(r_type, include_none=False):
         query = (
         "SELECT requirement_name FROM requirement "
         "WHERE requirement_type=%(r_type)s")
@@ -21,17 +21,18 @@ class Requirement():
         with cnx.cursor() as cursor:
             cursor.execute(query, {'r_type': r_type})
             reqs = cursor.fetchall()
-            reqs.append({'requirement_name': None})
+            if include_none:
+                reqs.append({'requirement_name': None})
         return reqs
 
     @staticmethod
-    def get_all_year():
-        return Requirement._get_by_type('year')
+    def get_all_year(include_none=False):
+        return Requirement._get_by_type('year', include_none=include_none)
     
     @staticmethod
-    def get_all_major():
-        return Requirement._get_by_type('major')
+    def get_all_major(include_none=False):
+        return Requirement._get_by_type('major', include_none=include_none)
 
     @staticmethod
-    def get_all_department():
-        return Requirement._get_by_type('department')
+    def get_all_department(include_none=False):
+        return Requirement._get_by_type('department', include_none=include_none)

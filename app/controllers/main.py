@@ -4,19 +4,32 @@ from flask_login import login_user, logout_user, login_required, current_user
 from datetime import datetime
 import json
 
-from app.forms import LoginForm, RegisterUserForm, EditUserForm
+from app.forms import LoginForm, RegisterUserForm, EditUserForm, SearchForm
 from app.models import User, Course, Project, Application, Major
 from app.search import search
 
 main = Blueprint('main', __name__)
 
-@main.route('/')
+@main.route('/', methods=['GET', 'POST'])
 def home():
     if not current_user.is_authenticated:
         return redirect(url_for('.login'))
-
-    results = search()
-    return render_template('index.html', results=results)
+    form = SearchForm()
+    if form.validate_on_submit():
+        search_both = form.search_type.data
+        search_projects = search_both or form.search_type.data == 'project'
+        search_courses = search_both or form.search_type.data == 'courses'
+        results = search(
+            title=form.title.data,
+            category=form.categories.data,
+            designation=form.designation.data,
+            major=form.major.data,
+            year=form.year.data,
+            project=search_projects,
+            course=search_courses)
+    else:
+        results = search()
+    return render_template('index.html', results=results, form=form)
 
 @main.route('/project/<project_name>', methods=['GET', 'POST'])
 @login_required

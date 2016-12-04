@@ -21,12 +21,13 @@ class Major():
         return department
 
     @staticmethod
-    def get_all():
+    def get_all(include_none=False):
         query = ("SELECT name, department_name FROM major")
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
             cursor.execute(query)
             all_data = list(cursor.fetchall())
-        all_data.append({'name': 'None'})
+        if include_none:
+            all_data.insert(0, {'name': 'None'})
         return all_data
 

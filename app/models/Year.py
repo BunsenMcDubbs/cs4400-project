@@ -21,12 +21,13 @@ class Year():
         return year
 
     @staticmethod
-    def get_all():
+    def get_all(include_none=False):
         query = ("SELECT year, name from year_name")
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
             cursor.execute(query)
             all_data = list(cursor.fetchall())
-        all_data.append({'name': 'None', 'year': None})
+        if include_none:
+            all_data.insert(0, {'name': 'None', 'year': None})
         return all_data
 

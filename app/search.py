@@ -1,52 +1,55 @@
 from app import db
 
 def search(title=None,category=None,designation=None,major=None,year=None,project=True,course=True):
-    course_str = "SELECT name, 'Course' as type FROM course WHERE true "
-    project_str = "SELECT name, 'Project' as type FROM project WHERE true "
-    # search_str = []
-    title_str = "AND name = '{}' "
-    course_category_str = "AND name IN (SELECT course_name FROM course_category "
-    project_category_str = "AND name IN (SELECT project_name FROM project_category "
-    designation_str = "AND designation_name = '{}' "
-    restriction_str = "name IN (SELECT project_name FROM project_requirement "
+    course_str = "SELECT name, 'Course' AS type FROM course WHERE %s"
+    project_str = "SELECT name, 'Project' AS type FROM project WHERE %s"
+    title_str = "name = '%s'"
+    course_category_str = "name IN (SELECT course_name FROM course_category WHERE category_name IN (%s))"
+    project_category_str = "name IN (SELECT project_name FROM project_category WHERE category_name IN (%s))"
+    designation_str = "designation_name = '%s'"
+    requirement_str = "name IN (SELECT name FROM project_requirement WHERE requirement IN (%s))"
+    
+    # query parts
+    course_qp = []
+    project_qp = []
+    
+    if title is not None and len(title) != 0:
+        course_qp.append(title_str%title)
+        project_qp.append(title_str%title)
+    if category is not None:
+        category = filter(lambda c: c is not None, category)
+        if len(category) != 0:
+            category_str = ','.join(["'%s'"%c for c in category])
+            course_qp.append(course_category_str%category_str)
+            project_qp.append(project_category_str%category_str)
+    if designation is not None:
+        course_qp.append(designation_str%designation)
+        project_qp.append(designation_str%designation)
+    if major is not None or year is not None:
+        in_clause = []
+        if major is not None:
+            in_clause.append("'%s'"%major)
+        if year is not None:
+            in_clause.append("'%s'"%year)
+        project_qp.append(requirement_str%','.join(in_clause))
 
-    if title != None:
-        title_str = title_str.format(title)
-        course_str += title_str
-        project_str += title_str
-    if category != None:
-        cat_str = "WHERE category_name IN ("
-        for item in category:
-            cat_str += "'{}',".format(item)
-        cat_str = cat_str[:-1] # remove trailing comma
-        cat_str += ") ) "
-        course_str += course_category_str + cat_str
-        project_str += project_category_str + cat_str
+    if len(course_qp) == 0:
+        course_qp.append('TRUE')
+    if len(project_qp) == 0:
+        project_qp.append('TRUE')
 
-    # designation, major, and year only for projects
-    if designation != None:
-        designation_str = designation_str.format(designation)
-        project_str += designation_str
-    if major != None or year != None:
-        res_str = "WHERE requirement IN ("
-        if major != None:
-            res_str += "'{}',".format(major)
-        if year != None:
-            res_str += "{},".format(year)
-        res_str = res_str[:-1] # remove trailing comma
-        res_str += ") )"
-        restriction_str += res_str
-        course_str += restriction_str
-        project_str += restriction_str
-
-    query = course_str + "UNION " + project_str
-    if project == False:
-        query = course_str
-    if course == False:
-        query = project_str
-
+    query_parts = []
+    if course:
+        query_parts.append(course_str%' AND '.join(course_qp))
+    if project:
+        query_parts.append(project_str%' AND '.join(project_qp))
+    
+    query = ' UNION ALL '.join(query_parts)
     cnx = db.get_connection()
     with cnx.cursor() as cursor:
-        cursor.execute(query)
-        results = cursor.fetchall()
+        try:
+            cursor.execute(query)
+            results = cursor.fetchall()
+        finally:
+            print cursor._last_executed
     return results

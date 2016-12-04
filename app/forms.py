@@ -4,7 +4,8 @@ from wtforms import (
     PasswordField,
     SelectField,
     SelectMultipleField,
-    IntegerField
+    IntegerField,
+    RadioField,
 )
 from wtforms import validators
 
@@ -48,8 +49,8 @@ class RegisterUserForm(Form):
         return True
 
 class EditUserForm(Form):
-    major = SelectField(u'major', choices=[(m['name'], m['name']) for m in Major.get_all()], coerce=_coerce_unicode)
-    year = SelectField(u'year', choices=[(y['year'], y['name']) for y in Year.get_all()], coerce=lambda x: int(x) if x else None)
+    major = SelectField(u'major', choices=[(m['name'], m['name']) for m in Major.get_all(include_none=True)], coerce=_coerce_unicode)
+    year = SelectField(u'year', choices=[(y['year'], y['name']) for y in Year.get_all(include_none=True)], coerce=lambda x: int(x) if x else None)
 
     def validate(self):
         # validating with SelectField is hard?
@@ -65,9 +66,9 @@ class AddProjectForm(Form):
     est_num_students = IntegerField(u'est_num_students', validators=[validators.required()])
     designation_name = SelectField(u'designation_name', choices=[(d['name'], d['name']) for d in Designation.get_all()])
     categories = SelectMultipleField(u'categories', choices=[(c['name'], c['name']) for c in Category.get_all()])
-    requirement_year = SelectField(u'requirement_year', choices=[(r['requirement_name'], r['requirement_name']) for r in Requirement.get_all_year()], coerce=_coerce_unicode)
-    requirement_major = SelectField(u'requirement_major', choices=[(r['requirement_name'], r['requirement_name']) for r in Requirement.get_all_major()], coerce=_coerce_unicode)
-    requirement_department = SelectField(u'requirement_department', choices=[(r['requirement_name'], r['requirement_name']) for r in Requirement.get_all_department()], coerce=_coerce_unicode)
+    requirement_year = SelectField(u'requirement_year', choices=[(r['requirement_name'], r['requirement_name']) for r in Requirement.get_all_year(include_none=True)], coerce=_coerce_unicode)
+    requirement_major = SelectField(u'requirement_major', choices=[(r['requirement_name'], r['requirement_name']) for r in Requirement.get_all_major(include_none=True)], coerce=_coerce_unicode)
+    requirement_department = SelectField(u'requirement_department', choices=[(r['requirement_name'], r['requirement_name']) for r in Requirement.get_all_department(include_none=True)], coerce=_coerce_unicode)
     
     def validate(self):
         if not super(AddProjectForm, self).validate():
@@ -85,4 +86,30 @@ class AddCourseForm(Form):
     def validate(self):
         # if not super(AddCourseForm, self).validate():
         #     return False
+        return True
+
+class SearchForm(Form):
+    title = TextField(u'title')
+    categories = SelectMultipleField(u'categories',
+        choices=[(_coerce_unicode(c['name']), c['name']) for c in Category.get_all(include_none=True)],
+        coerce=_coerce_unicode)
+    designation = SelectField(u'designation',
+        choices=[(_coerce_unicode(d['name']), d['name']) for d in Designation.get_all(include_none=True)],
+        coerce=_coerce_unicode)
+    year = SelectField(u'year',
+        choices=[(_coerce_unicode(r['requirement_name']), r['requirement_name']) for r in Requirement.get_all_year(include_none=True)],
+        default='None',
+        coerce=_coerce_unicode)
+    major = SelectField(u'major',
+        choices=[(_coerce_unicode(r['requirement_name']), r['requirement_name']) for r in Requirement.get_all_major(include_none=True)],
+        default='None',
+        coerce=_coerce_unicode)
+    search_type = RadioField(u'search_type',
+        choices=[('project', 'Project'), ('course', 'Course'), ('both', 'Both')],
+        default='both')
+
+    def validate(self):
+        #if not super(SearchForm, self).validate():
+        #    print 'validation failed'
+        #    return False
         return True
