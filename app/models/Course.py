@@ -2,7 +2,6 @@ import app.db as db
 
 class Course():
     def __init__(self, course_number, name, instructor, est_num_students, designation_name, categories, is_new_course=True):
-        print type(course_number)
         self.course_number = course_number
         self.name = name
         self.instructor = instructor
@@ -10,7 +9,7 @@ class Course():
         self.designation_name = designation_name
         self.categories = categories
         self.is_new_course = is_new_course
-    
+
     def save(self):
         insert_course = (
         "INSERT INTO course"
@@ -66,4 +65,3 @@ class Course():
                 data['categories'] = cursor.fetchall()
                 course = Course(is_new_course=False, **data)
         return course
-

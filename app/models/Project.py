@@ -40,7 +40,6 @@ class Project():
         "INSERT INTO project_requirement (name, requirement) "
         "VALUES (%(name)s, %(requirement)s)"
         )
-        print vars(self)
         cnx = db.get_connection()
         with cnx.cursor() as cursor:
             project_dict = {
@@ -93,7 +92,7 @@ class Project():
         "FROM project WHERE name like %(name)s")
         get_categories = ("SELECT category_name FROM project_category WHERE project_name=%(name)s")
         get_requirements = ("SELECT requirement FROM project_requirement WHERE name=%(name)s")
-        
+
         # if fuzzy search, then name should become '%<name>%'
         # ex) name = 'andrew' => name = '%andrew%'
         name = name if fuzzy is False else '%%%s%%'%(name)
