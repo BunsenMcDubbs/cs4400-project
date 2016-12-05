@@ -15,9 +15,9 @@ def home():
     if not current_user.is_authenticated:
         return redirect(url_for('.login'))
     form = SearchForm()
+    form_defaults = dict([(field.id, field.default) for field in form])
     if form.validate_on_submit():
         search_both = form.search_type.data == "both"
-        print(search_both)
         search_projects = search_both or form.search_type.data == 'project'
         search_courses = search_both or form.search_type.data == 'course'
         results = search(
@@ -30,7 +30,7 @@ def home():
             course=search_courses)
     else:
         results = search()
-    return render_template('index.html', results=results, form=form)
+    return render_template('home.html', results=results, form=form, form_defaults=form_defaults)
 
 @main.route('/project/<project_name>', methods=['GET', 'POST'])
 @login_required

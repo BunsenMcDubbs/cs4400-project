@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block js %}
+<script>var form_defaults = {{ form_defaults | tojson }};</script>
+<script src="static/js/home.js"></script>
+{% endblock %}
+
 {% import 'forms.html' as forms %}
 
 {% block title %}Main Page{% endblock %}
@@ -35,7 +40,7 @@
     {% endfor %}
   </div>
   <div class="form_group col-xs-12">
-    <span class="btn btn-default">Reset</span>
+    <span id="reset_search" class="btn btn-default">Reset</span>
     <button type="submit" class="btn btn-primary">Apply</button>
   </div>
 </form>

@@ -92,9 +92,11 @@ class SearchForm(Form):
     title = TextField(u'title')
     categories = SelectMultipleField(u'categories',
         choices=[(_coerce_unicode(c['name']), c['name']) for c in Category.get_all(include_none=True)],
+        default='None',
         coerce=_coerce_unicode)
     designation = SelectField(u'designation',
         choices=[(_coerce_unicode(d['name']), d['name']) for d in Designation.get_all(include_none=True)],
+        default='None',
         coerce=_coerce_unicode)
     year = SelectField(u'year',
         choices=[(_coerce_unicode(r['requirement_name']), r['requirement_name']) for r in Requirement.get_all_year(include_none=True)],
