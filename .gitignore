@@ -7,6 +7,9 @@ app/static/vendor
 # Vim editor files
 *.swp
 
+# Annoying MacOS Files
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
