@@ -38,6 +38,7 @@ def view_project(project_name):
     project = Project.find_by_name(project_name)
     if project is None:
         return abort(404)
+    project.description=str(project.description)
     project.categories = [c['category_name'] for c in project.categories]
     project.requirements = [r['requirement'] for r in project.requirements]
     has_prev_application = Application.find(
@@ -58,10 +59,18 @@ def view_project(project_name):
                     is_new_application=True)
                 application.save()
                 flash('Application successfully submitted!', 'success')
-    return render_template(
-        'view_project.html',
-        project=project,
-        has_prev_application=has_prev_application)
+    try:
+        temp = render_template(
+            'view_project.html',
+            project=project,
+            has_prev_application=has_prev_application)
+    except:
+        project.description = ''
+        temp = render_template(
+            'view_project.html',
+            project=project,
+            has_prev_application=has_prev_application)
+    return temp
 
 @main.route('/course/<course_name>')
 @login_required

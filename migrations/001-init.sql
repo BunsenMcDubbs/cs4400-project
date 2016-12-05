@@ -1,7 +1,7 @@
 create table user (
   username varchar(50) primary key,
   password varchar(100) not null,
-  email varchar(50),
+  email varchar(50) unique,
   year int,
   major varchar(50),
   is_admin boolean not null default false
@@ -16,7 +16,7 @@ create table year_name (
 
 create table project (
   name varchar(200) primary key,
-  description text,
+  description varchar(1000),
   advisor_email varchar(50),
   advisor_name varchar(50),
   est_num_students int,

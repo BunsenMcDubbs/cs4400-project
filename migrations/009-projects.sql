@@ -73,4 +73,6 @@ values
     ('Excel Current Events', 'Senior'),
     ('Shakespeare in Prison Project', 'college of design'),
     ('Know Your Water Project', 'computer science'),
-    ('Know Your Water Project', 'Senior');
+    ('Know Your Water Project', 'Senior'),
+    ('Epic Intentions', 'computer science'),
+    ('Epic Intentions', 'Senior');

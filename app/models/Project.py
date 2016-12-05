@@ -71,7 +71,7 @@ class Project():
                 if year_name != req:
                     return False
             elif requirement_type == 'major':
-                if self.major != req:
+                if user.major != req:
                     return False
             elif requirement_type == 'department':
                 department = Major.get_department(user.major)
