@@ -10,10 +10,10 @@ alter table project_requirement
     foreign key (requirement) references requirement(requirement_name);
 
 insert into requirement (requirement_name, requirement_type)
-values 
-    ('computer science', 'major'),
-    ('senior', 'year'),
-    ('junior', 'year'),
-    ('sophomore', 'year'),
-    ('college of computing', 'department'),
-    ('college of design', 'department')
+select name, 'major' from major;
+
+insert into requirement (requirement_name, requirement_type)
+select department_name, 'department' from major group by department_name;
+
+insert into requirement (requirement_name, requirement_type)
+select name, 'year' from year_name;

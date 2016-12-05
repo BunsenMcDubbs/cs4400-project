@@ -15,8 +15,8 @@ create table year_name (
 );
 
 create table project (
-  name varchar(50) primary key,
-  description varchar(200),
+  name varchar(200) primary key,
+  description text,
   advisor_email varchar(50),
   advisor_name varchar(50),
   est_num_students int,
@@ -24,7 +24,7 @@ create table project (
 );
 
 create table project_requirement (
-  name varchar(50),
+  name varchar(200),
   requirement varchar(50),
 
   primary key(name, requirement)
@@ -48,7 +48,7 @@ create table department (
 );
 
 create table course (
-  name varchar(50) primary key,
+  name varchar(200) primary key,
   course_number varchar(50),
   instructor varchar(50),
   est_num_students int,
@@ -56,7 +56,7 @@ create table course (
 );
 
 create table application (
-  project_name varchar(50),
+  project_name varchar(200),
   student_name varchar(50),
   application_date date not null,
   status enum('pending', 'accepted', 'rejected') not null,
@@ -65,14 +65,14 @@ create table application (
 );
 
 create table project_category (
-  project_name varchar(50),
+  project_name varchar(200),
   category_name varchar(50),
 
   primary key (project_name, category_name)
 );
 
 create table course_category (
-  course_name varchar(50),
+  course_name varchar(200),
   category_name varchar(50),
 
   primary key (course_name, category_name)
